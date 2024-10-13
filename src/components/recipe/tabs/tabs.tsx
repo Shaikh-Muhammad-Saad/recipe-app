@@ -3,7 +3,7 @@ import { useModal } from '@/store/slices/modal';
 import { Recipe } from '@/ts-types/generated';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Week1Tab from '@/components/recipe/tabs/week-1-tab';
 import Week2Tab from '@/components/recipe/tabs/week-2-tab';
 import Week3Tab from '@/components/recipe/tabs/week-3-tab';
@@ -12,13 +12,14 @@ const AllMealsTab = dynamic(() => import('@/components/recipe/tabs/all-meals-tab
 
 
 const classes = {
-    tabBase: 'font-semibold text-sm px-2 sm:px-4 md:px-7 xl:px-10 pt-5 mx-1 sm:mx-2 md:mx-3 xl:mx-4 pb-2 data-[selected]:border-b-[5px] border-tertiary focus:outline-none data-[selected]:text-text-tertiary '
+    tabBase: 'font-semibold text-xs sm:text-sm px-2 sm:px-4 md:px-7 xl:px-10 pt-5 mx-1 sm:mx-2 md:mx-3 xl:mx-4 pb-2 data-[selected]:border-b-[5px] border-tertiary focus:outline-none data-[selected]:text-text-tertiary '
 }
 
 const Tabs = () => {
     const [selectedTabIndex, setSelectedTabIndex] = useState<number>(0);
     const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
-    const { openModal } = useModal()
+    const { openModal } = useModal(); useRemoveHeaderBorder();
+
 
     const handleSetSelectedRecipe = (recipe: Recipe) => {
         if (selectedRecipe?.id === recipe.id) setSelectedRecipe(null);
@@ -29,7 +30,7 @@ const Tabs = () => {
         <div className='bg-primary relative'>
             <TabGroup defaultIndex={0} onChange={(index) => setSelectedTabIndex(index)}>
 
-                <div className='sticky top-0 z-50 flex justify-center items-center w-full border h-[105px] rounded-xl bg-secondary'>
+                <div id="stickyDiv" className='sticky top-0 z-10 flex justify-center items-center w-full border h-[105px] rounded-xl bg-secondary'>
 
                     <TabList className="flex">
                         <Tab className={`${classes.tabBase}`}>All Meals</Tab>
@@ -70,3 +71,26 @@ const Tabs = () => {
 }
 
 export default Tabs;
+
+
+const useRemoveHeaderBorder = () => {
+    useEffect(() => {
+        const handleScroll = () => {
+            const stickyDiv = document.getElementById('stickyDiv');
+            if (stickyDiv) {
+                if (window.scrollY > 335) {
+                    stickyDiv.classList.add('rounded-bl-xl', 'rounded-br-xl');
+                    stickyDiv.classList.remove('rounded-xl');
+                } else {
+                    stickyDiv.classList.remove('rounded-none');
+                    stickyDiv.classList.add('rounded-xl');
+                }
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+}

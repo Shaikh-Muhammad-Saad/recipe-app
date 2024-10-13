@@ -35,7 +35,7 @@ function SelectWeekModalView() {
             <Dialog
                 open={open}
                 onClose={() => closeModal()}
-                className="fixed inset-0 flex items-center justify-center bg-black/30 p-4 transition duration-100 ease-in data-[closed]:opacity-0"
+                className="z-20 fixed inset-0 flex items-center justify-center bg-black/30 p-4 transition duration-100 ease-in data-[closed]:opacity-0"
                 transition
             >
                 <div className="fixed inset-0 flex items-center justify-center p-4 ">
