@@ -11,6 +11,16 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+
+        // theme colors 
+        primary: "#f5ebf8",
+        secondary: "#FFFFFF",
+        tertiary: "#004370",
+
+        "text-primary": "#000000",
+        "text-secondary": "#FFFFFF",
+        "text-tertiary": "#004370",
+
       },
     },
   },
